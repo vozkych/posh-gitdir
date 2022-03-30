@@ -6,20 +6,20 @@
             <ScriptProperty>
                 <Name>Git</Name>
                 <GetScriptBlock>
-                $retVal = ""
-                if ($GitStatus.Index.Added -contains $this.Name) {  $retVal += "+" } `
-                elseif ($GitStatus.Index.Modified -contains $this.Name) { $retVal += "~" } `
-                elseif ($GitStatus.Index.Deleted -contains $this.Name) { $retVal += "-" } `
-                elseif ($GitStatus.Index.Unmerged -contains $this.Name) { $retVal += "!" } `
-                else { $retVal +=  " " }
-                
-                if ($GitStatus.Working.Added -contains $this.Name) { $retVal += "+" } `
-                elseif ($GitStatus.Working.Modified -contains $this.Name) { $retVal += "~" } `
-                elseif ($GitStatus.Working.Deleted -contains $this.Name) { $retVal += "-" } `
-                elseif ($GitStatus.Working.Unmerged -contains $this.Name) { $retVal += "!" } `
-                else { $retVal += " " }
+                $retValIdx = $null
+                $retValWrk = $null
+                if ($GitStatus.Index.Added -contains $this.Name) {  $retValIdx = "+" } `
+                elseif ($GitStatus.Index.Modified -contains $this.Name) { $retValIdx = "~" } `
+                elseif ($GitStatus.Index.Deleted -contains $this.Name) { $retValIdx = "-" } `
+                elseif ($GitStatus.Index.Unmerged -contains $this.Name) { $retValIdx = "!" } 
 
-                $retVal 
+                if ($GitStatus.Working.Added -contains $this.Name) { $retValWrk = "+" } `
+                elseif ($GitStatus.Working.Modified -contains $this.Name) { $retValWrk = "~" } `
+                elseif ($GitStatus.Working.Deleted -contains $this.Name) { $retValWrk = "-" } `
+                elseif ($GitStatus.Working.Unmerged -contains $this.Name) { $retValWrk = "!" }
+
+				if (-not ($retValIdx) -and -not ($retValWrk)) { "" }
+				else { [String]::Format("{0,1}|{1,1}", $retValIdx, $retValWrk) }
                 </GetScriptBlock>
             </ScriptProperty>
           </Members>
